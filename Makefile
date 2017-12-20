@@ -1,4 +1,10 @@
 
+.PHONY: all
+all: jcheck
+
+.PHONY: jcheck
+jcheck:
+	go build jcheck.go
 
 .PHONY: deps
 deps:
