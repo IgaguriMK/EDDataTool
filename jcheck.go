@@ -4,9 +4,11 @@ import (
 	"bufio"
 	"crypto/sha256"
 	"encoding/hex"
+	"encoding/json"
 	"fmt"
 	"log"
 	"os"
+	"strings"
 
 	"github.com/IgaguriMK/EDDataTool/model/journal"
 	"github.com/pkg/errors"
@@ -86,6 +88,35 @@ func checkIn(table map[string]*RawEvevtSaver, fname string) (int, int) {
 }
 
 func checkLackOfField(eventStr string, event journal.Event) bool {
+	bytes := []byte(eventStr)
+	var v interface{}
+	err := json.Unmarshal(bytes, &v)
+	if err != nil {
+		log.Fatal(err)
+	}
+	bytes, err = json.MarshalIndent(v, "", "\t")
+	if err != nil {
+		log.Fatal(err)
+	}
+	eventStr = string(bytes)
+
+	bytes, err = json.MarshalIndent(v, "", "\t")
+	if err != nil {
+		log.Fatal(err)
+	}
+	actualStr := string(bytes)
+
+	wantLines := strings.Split(eventStr, "\n")
+	getLines := strings.Split(actualStr, "\n")
+
+	if len(wantLines) != len(getLines) {
+		fmt.Println(eventStr)
+		fmt.Println(actualStr)
+		fmt.Println()
+		saveFailRecord("1.mismatch."+event.GetEvent()+".", ".txt", eventStr+"\n"+actualStr)
+		return false
+	}
+
 	return true
 }
 
