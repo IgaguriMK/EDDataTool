@@ -3,3 +3,4 @@ jcheck
 
 *.log
 target/
+out_jcheck

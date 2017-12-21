@@ -68,6 +68,7 @@ func checkIn(table map[string]*RawEvevtSaver, fname string) (int, int) {
 				saveFailRecord("0.unknown."+err.Type+".", ".json", err.Raw)
 			default:
 				log.Println(err)
+				log.Fatal("    " + eventStr)
 			}
 			continue
 		}
