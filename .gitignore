@@ -1,4 +1,6 @@
-
+jcheck
 *.exe
 
 *.log
+target/
+out_jcheck
