@@ -10,6 +10,7 @@ jcheck:
 deps:
 	go get github.com/mattn/go-sqlite3
 	go get github.com/pkg/errors
+	go get github.com/IgaguriMK/ed-journal
 
 .PHONY: deptools
 deptools:

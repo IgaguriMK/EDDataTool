@@ -10,7 +10,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/IgaguriMK/EDDataTool/model/journal"
+	jevent "github.com/IgaguriMK/ed-journal/event"
 	"github.com/pkg/errors"
 )
 
@@ -63,10 +63,10 @@ func checkIn(table map[string]*RawEvevtSaver, fname string) (int, int) {
 	for sc.Scan() {
 		dt++
 		eventStr := sc.Text()
-		event, err := journal.ParseEvent(eventStr)
+		event, err := jevent.ParseEvent(eventStr)
 		if err != nil {
 			switch err := errors.Cause(err).(type) {
-			case *journal.UnknownEventType:
+			case *jevent.UnknownEventType:
 				saveFailRecord("0.unknown."+err.Type+".", ".json", err.Raw)
 			default:
 				log.Println(err)
@@ -87,7 +87,7 @@ func checkIn(table map[string]*RawEvevtSaver, fname string) (int, int) {
 	return dt, ds
 }
 
-func checkLackOfField(eventStr string, event journal.Event) bool {
+func checkLackOfField(eventStr string, event jevent.Event) bool {
 	bytes := []byte(eventStr)
 	var v interface{}
 	err := json.Unmarshal(bytes, &v)
@@ -139,7 +139,7 @@ type RawEvevtSaver struct {
 	isFirst bool
 }
 
-func getOrNewSaver(table map[string]*RawEvevtSaver, event journal.Event) *RawEvevtSaver {
+func getOrNewSaver(table map[string]*RawEvevtSaver, event jevent.Event) *RawEvevtSaver {
 	eventType := event.GetEvent()
 
 	s, ok := table[eventType]
