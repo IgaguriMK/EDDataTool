@@ -78,6 +78,7 @@ func checkIn(table map[string]*RawEvevtSaver, fname string) (int, int) {
 		getOrNewSaver(table, event).save(eventStr)
 
 		if !checkLackOfField(eventStr, event) {
+			log.Println(err)
 			continue
 		}
 

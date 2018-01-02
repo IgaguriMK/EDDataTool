@@ -17,7 +17,7 @@ if [ $TYPE == "" ]; then
 fi
 
 TMPF=`mktemp`.go
-gojson -name $TYPE -subStruct -input $ERR \
+gojson -name $TYPE -input $ERR \
 	| sed 's/Timestamp *string/Timestamp time.Time/' \
 	> $TMPF
 cat >> $TMPF <<-EOF
